@@ -27,12 +27,25 @@ def newDictionary(tup, d):
         for l in range(len(word)):
             if tup[l][1] == 0:
                 break
+            # else:
+            #     if tup[l][0] in word:
+            #         newDict.append(word)
             elif tup[l][1] == 1:
                 if tup[l][0] in word:
                     newDict.append(word)
             else:
                 if tup[l][0] == word[l]:
                     newDict.append(word)
+
+    w = 0
+    for l in range(len(newDict[w])):
+        w += 1
+        currentWord = newDict[w]
+        if tup[l][1] != 2:
+            newDict.remove(newDict[w])
+            w -= 1
+            continue
+        
             
     return newDict  
     # return None
