@@ -9,14 +9,17 @@ data = open("valid.txt", "r")
 # mark 2 if letter in word at the right place
 
 def compare(sol, guess):
-    for i in len(guess):
-        if guess[i] == sol[i]:
-            #green
-        elif guess[i] in sol:
-            # yellow
+    i = 0
+    solArray = []
+    for ele in guess:
+        if ele == sol[i]:
+            solArray.append(2)
+        elif ele in sol:
+            solArray.append(1)
         else:
-            #gray
-            #cannot use letter again
+            solArray.append(0)
+        i += 1
+    return solArray
 
 #modify data
 words = data.readlines()
@@ -34,6 +37,9 @@ while attempt < 7:
     guess = words[r]
 
     #compare
+    arr = compare(goalWord, guess)
+
+    # return dictionary with remaining valid words
 
     print(guess)
     
