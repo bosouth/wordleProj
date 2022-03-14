@@ -13,20 +13,36 @@ def compare(sol, guess):
     solArray = []
     for ele in guess:
         if ele == sol[i]:
-            solArray.append(2)
+            solArray.append((ele, 2))
         elif ele in sol:
-            solArray.append(1)
+            solArray.append((ele, 1))
         else:
-            solArray.append(0)
+            solArray.append((ele, 0))
         i += 1
     return solArray
+
+def newDictionary(tup, d):
+    newDict = []
+    for word in d:
+        for l in range(len(word)):
+            if tup[l][1] == 0:
+                break
+            elif tup[l][1] == 1:
+                if tup[l][0] in word:
+                    newDict.append(word)
+            else:
+                if tup[l][0] == word[l]:
+                    newDict.append(word)
+            
+    return newDict  
+    # return None
 
 #modify data
 words = data.readlines()
 words = words[0].split(",")
 words = [w.strip("\"") for w in words]
 
-goalWord = words[1111]
+goalWord = "lawns"
 attempt = 1
 
 print(goalWord)
@@ -34,12 +50,13 @@ print(goalWord)
 while attempt < 7:
     r = rand.randint(0, len(words) -1)
 
-    guess = words[r]
+    guess = "loans"
 
     #compare
-    arr = compare(goalWord, guess)
+    tup = compare(goalWord, guess)
 
     # return dictionary with remaining valid words
+    new = newDictionary(tup, words)
 
     print(guess)
     
