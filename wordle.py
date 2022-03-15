@@ -40,6 +40,7 @@ def compare(sol, guess):
 def newDictionary(tup, d, guess):
     green = []
     yellow = []
+
     for m in range(len(tup)):
         if tup[m][1] == 2:
             green.append((tup[m][0], m))
@@ -49,11 +50,13 @@ def newDictionary(tup, d, guess):
     newDict = []
     tempDict = []
 
-
+    
     for w in d:
+        t = w
         for ele in green:
             if w[ele[1]] == ele[0]:
-                if green.index(ele) == len(green) - 1 and checkYellows(yellow, w) == True:
+                t = t.replace(ele[0], "", 1)
+                if green.index(ele) == len(green) - 1 and checkYellows(yellow, t) == True:
                     if w[ele[1]] == ele[0]:
                         newDict.append(w)
                         break
@@ -74,7 +77,7 @@ attempt = 1
 while attempt < 7:
     r = rand.randint(0, len(words) -1)
 
-    guess = "betas"
+    guess = "benes"
 
     if isValidWord(guess, words) == False:
         print("Invalid word")
