@@ -7,6 +7,7 @@ data = open("valid.txt", "r")
 #mark 0 if letter not in word 
 # mark 1 if letter in word but not in right place
 # mark 2 if letter in word at the right place
+# LMAO
 
 def isValidWord(guess, words):
     isValid = False
