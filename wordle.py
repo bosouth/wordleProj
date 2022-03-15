@@ -7,7 +7,6 @@ data = open("valid.txt", "r")
 #mark 0 if letter not in word 
 # mark 1 if letter in word but not in right place
 # mark 2 if letter in word at the right place
-# LMAO
 
 def isValidWord(guess, words):
     isValid = False
@@ -37,7 +36,7 @@ def newDictionary(tup, d, guess):
             if tup[l][1] == 0:
                 continue
             elif tup[l][1] == 1:
-                if tup[l][0] in word:
+                if tup[l][0] in word and tup[l][0] != word[l]: # check for yellow not in same spot
                     tempDict.append(word)
                 break
             else:
