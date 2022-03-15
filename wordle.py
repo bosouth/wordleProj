@@ -1,6 +1,7 @@
 import random as rand
+import numpy as np
 
-data = open("valid.txt", "r")
+data = open("words.txt", "r")
 
 #6 chances to guess secret 5 letter word
 
@@ -37,6 +38,27 @@ def compare(sol, guess):
         i += 1
     return solArray
 
+def indexConvert(wordIn, ans):
+    convertThis = compare(wordIn, ans)
+    sum = 0
+    for i in range(5):
+        sum += 3**i * int(convertThis[i][1])
+    return sum
+
+def entropyCalc(dictIn, ans):
+    values = np.zeros(3**5)
+    for word in dictIn:
+        values[indexConvert(word, ans)] += 1
+    for i in range(len(values)):
+        values[i] = values[i] / len(dictIn)
+    sum = 0
+    for prob in values:
+        if prob == 0:
+            continue
+        sum += -prob*np.log2(prob)
+    return sum
+
+
 def newDictionary(tup, d, guess):
     green = []
     yellow = []
@@ -69,16 +91,16 @@ def newDictionary(tup, d, guess):
 words = data.readlines()
 words = words[0].split(",")
 words = [w.strip("\"") for w in words]
-
-goalWord = "beaux"
+goalWord = "plant"
 attempt = 1
 
+# guess = "floss"
 
-while attempt < 7:
+while attempt < 6:
+    print(len(words))
     r = rand.randint(0, len(words) -1)
-
-    guess = "benes"
-
+    guess = words[r]
+    # print(guess)
     if isValidWord(guess, words) == False:
         print("Invalid word")
         break
@@ -89,8 +111,14 @@ while attempt < 7:
     # return dictionary with remaining valid words
     new = newDictionary(tup, words, guess)
 
-    print(new)
+    # entropies = np.zeros(len(new))
+    # for i in range(len(new)):
+    #     entropies[i] = entropyCalc(newDictionary(tup, new, new[i]), goalWord)
 
+    print(new)
+    words = new
+    # print(entropies)
+    # guess = new(np.argmax(entropies))
     # use knn to determine closest word, rinse and repeat
     
     attempt += 1
