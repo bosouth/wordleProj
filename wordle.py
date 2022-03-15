@@ -14,6 +14,15 @@ def isValidWord(guess, words):
         isValid = True
     return isValid
 
+def checkYellows(yellow, guess):
+    result = True
+    for ele in yellow:
+        if ele not in guess:
+            result = False
+
+    return result
+
+
 def compare(sol, guess):
     # ensure that double letter guess are counted for
     i = 0
@@ -29,25 +38,6 @@ def compare(sol, guess):
     return solArray
 
 def newDictionary(tup, d, guess):
-    newDict = []
-    tempDict = []
-    for word in d:
-        for l in range(len(word)):
-            if tup[l][1] == 0:
-                continue
-            elif tup[l][1] == 1:
-                if tup[l][0] in word and tup[l][0] != word[l]: # check for yellow not in same spot
-                    tempDict.append(word)
-                break
-            else:
-                if tup[l][0] == word[l]:
-                    tempDict.append(word)
-                break
-    if tempDict == []:
-        return d
-
-    # find indexes of each letter whose value is 2
-    # only return words that have ALL green words
     green = []
     yellow = []
     for m in range(len(tup)):
@@ -56,24 +46,21 @@ def newDictionary(tup, d, guess):
         if tup[m][1] == 1:
             yellow.append(tup[m][0])
 
-    if len(green) == 0:
-        return tempDict
+    newDict = []
+    tempDict = []
 
-    for w in tempDict:
+
+    for w in d:
         for ele in green:
-            
-            if green.index(ele) == len(green) - 1:
-                if w[ele[1]] == ele[0]:
-                    newDict.append(w)
-                    break
-
             if w[ele[1]] == ele[0]:
-                continue
-            
+                if green.index(ele) == len(green) - 1 and checkYellows(yellow, w) == True:
+                    if w[ele[1]] == ele[0]:
+                        newDict.append(w)
+                        break
+                    continue
             else:
                 break
     return newDict  
-    # return None
 
 #modify data
 words = data.readlines()
