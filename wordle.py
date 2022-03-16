@@ -70,11 +70,17 @@ def newDictionary(tup, d, guess):
             yellow.append(tup[m][0])
 
     newDict = []
-    tempDict = []
-
+    if len(green) == 0 and len(yellow) == 0:
+        return d
     
     for w in d:
         t = w
+        if len(green) == 0:
+            for ele in yellow:
+                if ele not in t:
+                    break
+                elif yellow.index(ele) == len(yellow) - 1:
+                    newDict.append(w)
         for ele in green:
             if w[ele[1]] == ele[0]:
                 t = t.replace(ele[0], "", 1)
@@ -96,10 +102,11 @@ attempt = 1
 
 # guess = "floss"
 
-while attempt < 6:
+while attempt < 7:
     print(len(words))
     r = rand.randint(0, len(words) -1)
     guess = words[r]
+    # guess = "strip"
     # print(guess)
     if isValidWord(guess, words) == False:
         print("Invalid word")
