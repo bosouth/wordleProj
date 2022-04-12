@@ -5,7 +5,7 @@ data = open("words.txt", "r")
 
 #6 chances to guess secret 5 letter word
 
-#mark 0 if letter not in word 
+# mark 0 if letter not in word
 # mark 1 if letter in word but not in right place
 # mark 2 if letter in word at the right place
 
@@ -28,11 +28,17 @@ def compare(sol, guess):
     # ensure that double letter guess are counted for
     i = 0
     solArray = []
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    alphabetCount = np.zeros(26)
+    for letter in sol:
+        alphabetCount[alphabet.index(letter)] += 1
     for ele in guess:
         if ele == sol[i]:
             solArray.append((ele, 2))
-        elif ele in sol:
+            alphabetCount[alphabet.index(ele)] -= 1
+        elif ele in sol and alphabetCount[alphabet.index(ele)] > 0:
             solArray.append((ele, 1))
+            alphabetCount[alphabet.index(ele)] -= 1
         else:
             solArray.append((ele, 0))
         i += 1
@@ -100,12 +106,15 @@ words = [w.strip("\"") for w in words]
 goalWord = "plant"
 attempt = 1
 
-# guess = "floss"
 
+# guess = "floss"
 while attempt < 7:
     print(len(words))
     r = rand.randint(0, len(words) -1)
     guess = words[r]
+    if attempt == 1:
+        guess = "papal"
+    print(guess)
     # guess = "strip"
     # print(guess)
     if isValidWord(guess, words) == False:
