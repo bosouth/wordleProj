@@ -27,21 +27,46 @@ def checkYellows(yellow, guess):
 def compare(sol, guess):
     # ensure that double letter guess are counted for
     i = 0
-    solArray = []
+    solArray = [('', 0), ('', 0), ('', 0), ('', 0), ('', 0)]
     alphabet = "abcdefghijklmnopqrstuvwxyz"
     alphabetCount = np.zeros(26)
+    greenTrack = []
     for letter in sol:
         alphabetCount[alphabet.index(letter)] += 1
+
+    # green check
     for ele in guess:
         if ele == sol[i]:
-            solArray.append((ele, 2))
+            solArray[i]=(ele, 2)
             alphabetCount[alphabet.index(ele)] -= 1
-        elif ele in sol and alphabetCount[alphabet.index(ele)] > 0:
-            solArray.append((ele, 1))
+            greenTrack.append(i)
+        i += 1
+
+
+    # yellow/gray check
+    i = 0
+    for ele in guess:
+        if i in greenTrack:
+            continue
+        if ele in sol and alphabetCount[alphabet.index(ele)] > 0:
+            solArray[i]=(ele, 1)
             alphabetCount[alphabet.index(ele)] -= 1
         else:
-            solArray.append((ele, 0))
+            solArray[i]=(ele, 0)
         i += 1
+
+
+    #for ele in guess:
+    #    if ele == sol[i]:
+    #        solArray.append((ele, 2))
+    #        alphabetCount[alphabet.index(ele)] -= 1
+    #    elif ele in sol and alphabetCount[alphabet.index(ele)] > 0:
+    #        solArray.append((ele, 1))
+    #        alphabetCount[alphabet.index(ele)] -= 1
+    #    else:
+    #        solArray.append((ele, 0))
+    #    i += 1
+
     return solArray
 
 def indexConvert(wordIn, ans):
@@ -106,7 +131,6 @@ words = [w.strip("\"") for w in words]
 goalWord = "plant"
 attempt = 1
 
-
 # guess = "floss"
 while attempt < 7:
     print(len(words))
@@ -114,6 +138,7 @@ while attempt < 7:
     guess = words[r]
     if attempt == 1:
         guess = "papal"
+
     print(guess)
     # guess = "strip"
     # print(guess)
