@@ -42,11 +42,11 @@ def compare(sol, guess):
             greenTrack.append(i)
         i += 1
 
-
     # yellow/gray check
     i = 0
     for ele in guess:
         if i in greenTrack:
+            i += 1
             continue
         if ele in sol and alphabetCount[alphabet.index(ele)] > 0:
             solArray[i]=(ele, 1)
@@ -54,18 +54,6 @@ def compare(sol, guess):
         else:
             solArray[i]=(ele, 0)
         i += 1
-
-
-    #for ele in guess:
-    #    if ele == sol[i]:
-    #        solArray.append((ele, 2))
-    #        alphabetCount[alphabet.index(ele)] -= 1
-    #    elif ele in sol and alphabetCount[alphabet.index(ele)] > 0:
-    #        solArray.append((ele, 1))
-    #        alphabetCount[alphabet.index(ele)] -= 1
-    #    else:
-    #        solArray.append((ele, 0))
-    #    i += 1
 
     return solArray
 
@@ -131,8 +119,6 @@ def newDictionary(tup, d, guess):
                     continue
             else:
                 break
-
-        
             
     return newDict  
 
@@ -148,8 +134,8 @@ while attempt < 7:
     print(len(words))
     r = rand.randint(0, len(words) -1)
     guess = words[r]
-    # if attempt == 1:
-    #     guess = "papal"
+    if attempt == 1:
+        guess = "trash"
     print(guess)
     # guess = "strip"
     # print(guess)
