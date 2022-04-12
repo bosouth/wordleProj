@@ -93,18 +93,27 @@ def entropyCalc(dictIn, ans):
 def newDictionary(tup, d, guess):
     green = []
     yellow = []
+    gray = []
 
     for m in range(len(tup)):
         if tup[m][1] == 2:
             green.append((tup[m][0], m))
         if tup[m][1] == 1:
             yellow.append(tup[m][0])
+        if tup[m][1] == 0:
+            gray.append(tup[m][0])
 
     newDict = []
-    if len(green) == 0 and len(yellow) == 0:
-        return d
+    zeroDict = []
+    noZerosDict = []
     
     for w in d:
+        for ele in gray:
+            if ele in w:
+                zeroDict.append(w)
+        
+    noZerosDict = list(set(d).difference(zeroDict))
+    for w in noZerosDict:
         t = w
         if len(green) == 0:
             for ele in yellow:
@@ -122,6 +131,9 @@ def newDictionary(tup, d, guess):
                     continue
             else:
                 break
+
+        
+            
     return newDict  
 
 #modify data
@@ -136,9 +148,8 @@ while attempt < 7:
     print(len(words))
     r = rand.randint(0, len(words) -1)
     guess = words[r]
-    if attempt == 1:
-        guess = "papal"
-
+    # if attempt == 1:
+    #     guess = "papal"
     print(guess)
     # guess = "strip"
     # print(guess)
@@ -160,6 +171,7 @@ while attempt < 7:
     words = new
     # print(entropies)
     # guess = new(np.argmax(entropies))
+
     # use knn to determine closest word, rinse and repeat
     
     attempt += 1
