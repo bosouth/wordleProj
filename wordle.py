@@ -80,12 +80,14 @@ def entropyCalc(dictIn, ans):
 
 def newDictionary(tup, d, guess):
     green = []
+    greenLetters = []
     yellow = []
     gray = []
 
     for m in range(len(tup)):
         if tup[m][1] == 2:
             green.append((tup[m][0], m))
+            greenLetters.append(tup[m][0])
         if tup[m][1] == 1:
             yellow.append(tup[m][0])
         if tup[m][1] == 0:
@@ -98,9 +100,20 @@ def newDictionary(tup, d, guess):
     for w in d:
         for ele in gray:
             if ele in w:
-                zeroDict.append(w)
-        
+                if greenLetters.count(ele) > 0: 
+                    if w.count(ele) == greenLetters.count(ele) + 1:
+                        zeroDict.append(w)
+                if yellow.count(ele) > 0:
+                    if w.count(ele) == yellow.count(ele) + 1:
+                        zeroDict.append(w)
+                else:
+                    zeroDict.append(w)
+                
     noZerosDict = list(set(d).difference(zeroDict))
+
+    if len(green) == 0 and len(yellow) == 0:
+        return noZerosDict
+
     for w in noZerosDict:
         t = w
         if len(green) == 0:
@@ -119,7 +132,6 @@ def newDictionary(tup, d, guess):
                     continue
             else:
                 break
-            
     return newDict  
 
 #modify data
@@ -134,11 +146,9 @@ while attempt < 7:
     print(len(words))
     r = rand.randint(0, len(words) -1)
     guess = words[r]
-    if attempt == 1:
-        guess = "trash"
+    # if attempt == 1:
+    #     guess = "alpha"
     print(guess)
-    # guess = "strip"
-    # print(guess)
     if isValidWord(guess, words) == False:
         print("Invalid word")
         break
@@ -149,7 +159,7 @@ while attempt < 7:
     # return dictionary with remaining valid words
     new = newDictionary(tup, words, guess)
 
-    # entropies = np.zeros(len(new))
+    entropies = np.zeros(len(new))
     # for i in range(len(new)):
     #     entropies[i] = entropyCalc(newDictionary(tup, new, new[i]), goalWord)
 
