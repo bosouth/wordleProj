@@ -177,7 +177,7 @@ while attempt < 7:
     
     attempt += 1
     
-# Using entropy to guess
+# Using max entropy to guess
 #while attempt < 7:
 #    print(len(words))
     
