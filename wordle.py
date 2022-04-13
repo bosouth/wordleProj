@@ -165,14 +165,57 @@ while attempt < 7:
 
     entropies = np.zeros(len(new))
     # for i in range(len(new)):
+    #     tup = compare(goalWord, new[i])
     #     entropies[i] = entropyCalc(newDictionary(tup, new, new[i]), goalWord)
 
     print(new)
     words = new
     # print(entropies)
-    # guess = new(np.argmax(entropies))
+    # guess = new[np.argmax(entropies)]
 
     # use knn to determine closest word, rinse and repeat
     
     attempt += 1
+    
+# Using entropy to guess
+#while attempt < 7:
+#    print(len(words))
+    
+#    if attempt == 1:
+#        entropies = np.zeros(len(words))
+#        for i in range(len(words)):
+#            tup = compare(goalWord, words[i])
+#            entropies[i] = entropyCalc(newDictionary(tup, words, words[i]), goalWord)
+         
+#        guess = words[np.argmax(entropies)]   
+#        # For using min entropy
+#        #guess = words[np.argmin(entropies)]
+    
+#    if attempt != 1:
+#        entropies = np.zeros(len(new))
+#        for i in range(len(new)):
+#            tup = compare(goalWord, new[i])
+#            entropies[i] = entropyCalc(newDictionary(tup, new, new[i]), goalWord)
+
+#        guess = new[np.argmax(entropies)]
+#        # For using min entropy
+#        #guess = new[np.argmin(entropies)]
+
+#    if isValidWord(guess, words) == False:
+#        print("Invalid word")
+#        break
+    
+#    print(guess)
+#    print(entropies)
+    
+#    #compare
+#    tup = compare(goalWord, guess)
+
+#    # return dictionary with remaining valid words
+#    new = newDictionary(tup, words, guess)
+    
+#    print(new)
+#    words = new
+    
+#    attempt += 1
 
