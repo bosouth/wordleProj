@@ -103,9 +103,13 @@ def newDictionary(tup, d, guess):
                 if greenLetters.count(ele) > 0: 
                     if w.count(ele) == greenLetters.count(ele) + 1:
                         zeroDict.append(w)
+                    else:
+                        continue
                 if yellow.count(ele) > 0:
                     if w.count(ele) == yellow.count(ele) + 1:
                         zeroDict.append(w)
+                    else:
+                        continue
                 else:
                     zeroDict.append(w)
                 
@@ -147,7 +151,7 @@ while attempt < 7:
     r = rand.randint(0, len(words) -1)
     guess = words[r]
     # if attempt == 1:
-    #     guess = "alpha"
+    #     guess = "flail"
     print(guess)
     if isValidWord(guess, words) == False:
         print("Invalid word")
