@@ -143,26 +143,25 @@ words = data.readlines()
 words = words[0].split(",")
 words = [w.strip("\"") for w in words]
 
-goalWord = "taunt"
+r = rand.randint(0, len(words) - 1)
+goalWord = words[r]
+
 attempt = 1
 
-for word in words:
-    i = compare(goalWord, word)
-    if i[0][1] == 2:
-        guess = word
 
-# guess = "floss"
+
+# baseline
 while attempt < 10:
-    print(len(words))
-    
+    q = rand.randint(0, len(words) - 1)
+    guess = words[q]
     if guess == goalWord:
-        print("the word was guessed in " + str(attempt) + " tries.")
+        print("the baseline guessed the word in " + str(attempt) + " tries.")
         break
     
     print(guess)
-    if isValidWord(guess, words) == False:
-        print("Invalid word")
-        break
+    # if isValidWord(guess, allWords) == False:
+    #     print("Invalid word")
+    #     break
 
     #compare
     tup = compare(goalWord, guess)
@@ -170,20 +169,55 @@ while attempt < 10:
     # return dictionary with remaining valid words
     new = newDictionary(tup, words, guess)
 
-    entropies = np.zeros(len(new))
-    for i in range(len(new)):
-        tup = compare(goalWord, new[i])
-        entropies[i] = entropyCalc(newDictionary(tup, new, new[i]), goalWord)
-
-    print(new)
+    # print(new)
     words = new
-    print(entropies)
-    guess = new[np.argmax(entropies)]
-
     
-
-    # use knn to determine closest word, rinse and repeat
     
+    attempt += 1
+
+data = open("words.txt", "r")
+words = data.readlines()
+words = words[0].split(",")
+words = [w.strip("\"") for w in words]
+
+
+
+attempt = 1
+#oracle
+while attempt < 10:
+    if attempt == 1:
+        for word in words:
+            i = compare(goalWord, word)
+            if i[0][1] == 2:
+                guess = word
+    else:
+        q = rand.randint(0, len(words) - 1)
+        guess = words[q]
+
+
+    if guess == goalWord:
+        print("the oracle guessed the word in " + str(attempt) + " tries.")
+        break
+    
+    print(guess)
+    # if isValidWord(guess, allWords) == False:
+    #     print("Invalid word")
+    #     break
+
+    #compare
+    tup = compare(goalWord, guess)
+
+    # return dictionary with remaining valid words
+    new = newDictionary(tup, words, guess)
+
+    # entropies = np.zeros(len(new))
+    # for i in range(len(new)):
+    #     tup = compare(goalWord, new[i])
+    #     entropies[i] = entropyCalc(newDictionary(tup, new, new[i]), goalWord)
+
+    # print(new)
+    
+    words = new
     attempt += 1
     
 # Using max entropy to guess
