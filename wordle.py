@@ -142,10 +142,14 @@ def newDictionary(tup, d, guess):
 words = data.readlines()
 words = words[0].split(",")
 words = [w.strip("\"") for w in words]
-goalWord = "dream"
+
+goalWord = "taunt"
 attempt = 1
-r = rand.randint(0, len(words) -1)
-guess = words[r]
+
+for word in words:
+    i = compare(goalWord, word)
+    if i[0][1] == 2:
+        guess = word
 
 # guess = "floss"
 while attempt < 10:
