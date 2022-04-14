@@ -142,16 +142,19 @@ def newDictionary(tup, d, guess):
 words = data.readlines()
 words = words[0].split(",")
 words = [w.strip("\"") for w in words]
-goalWord = "plant"
+goalWord = "dream"
 attempt = 1
+r = rand.randint(0, len(words) -1)
+guess = words[r]
 
 # guess = "floss"
-while attempt < 7:
+while attempt < 10:
     print(len(words))
-    r = rand.randint(0, len(words) -1)
-    guess = words[r]
-    # if attempt == 1:
-    #     guess = "flail"
+    
+    if guess == goalWord:
+        print("the word was guessed in " + str(attempt) + " tries.")
+        break
+    
     print(guess)
     if isValidWord(guess, words) == False:
         print("Invalid word")
@@ -164,14 +167,16 @@ while attempt < 7:
     new = newDictionary(tup, words, guess)
 
     entropies = np.zeros(len(new))
-    # for i in range(len(new)):
-    #     tup = compare(goalWord, new[i])
-    #     entropies[i] = entropyCalc(newDictionary(tup, new, new[i]), goalWord)
+    for i in range(len(new)):
+        tup = compare(goalWord, new[i])
+        entropies[i] = entropyCalc(newDictionary(tup, new, new[i]), goalWord)
 
     print(new)
     words = new
-    # print(entropies)
-    # guess = new[np.argmax(entropies)]
+    print(entropies)
+    guess = new[np.argmax(entropies)]
+
+    
 
     # use knn to determine closest word, rinse and repeat
     
