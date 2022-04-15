@@ -100,6 +100,8 @@ def newDictionary(tup, d, guess):
     for w in d:
         for ele in gray:
             if ele in w:
+                if greenLetters.count(ele) > 0 and yellow.count(ele) > 0:
+                    continue
                 if greenLetters.count(ele) > 0: 
                     if w.count(ele) == greenLetters.count(ele) + 1:
                         zeroDict.append(w)
@@ -230,7 +232,7 @@ def entropy_guess():
     global goalWord
     attempt = 1
     while attempt < 7:
-        print(len(words))
+        #print(len(words))
     
         if attempt == 1:
             entropies = np.zeros(len(words))
@@ -255,9 +257,14 @@ def entropy_guess():
         if isValidWord(guess, words) == False:
             print("Invalid word")
             break
+        
+        if guess == goalWord:
+            print("Guess is: " + guess)
+            print("entropy guessed the word in " + str(attempt) + " tries.\n")
+            break
     
-        print(guess)
-        print(entropies)
+        print("Guess is: " + guess)
+        #print(entropies)
     
         #compare
         tup = compare(goalWord, guess)
@@ -265,7 +272,7 @@ def entropy_guess():
         # return dictionary with remaining valid words
         new = newDictionary(tup, words, guess)
     
-        print(new)
+        #print(new)
         words = new
     
         attempt += 1
@@ -279,6 +286,7 @@ while tries < 101:
     r = rand.randint(0, len(words) -1)
     goalWord = words[r]
     attempt = 1
+    print("Try #" + str(attempt))
     print("Goal word is: " + goalWord)
 
     # Using baseline to guess
