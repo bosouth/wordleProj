@@ -280,12 +280,12 @@ def entropy_guess():
 # Loop for 100 times
 tries = 1
 words_permanent = words
-
+attempt = 1
 while tries < 101:
     words = words_permanent
     r = rand.randint(0, len(words) -1)
     goalWord = words[r]
-    attempt = 1
+   
     print("Try #" + str(attempt))
     print("Goal word is: " + goalWord)
 
@@ -297,6 +297,7 @@ while tries < 101:
     
     # Using entropy to guess
     #entropy_guess()
-        
+    
+    attempt += 1    
     tries += 1
 
