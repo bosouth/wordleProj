@@ -121,15 +121,15 @@ def newDictionary(tup, d, guess):
     for w in noZerosDict:
         t = w
         if len(green) == 0:
-            for ele in yellow:
+            for idx, ele in enumerate(yellow):
                 if ele not in t:
                     break
-                elif yellow.index(ele) == len(yellow) - 1:
+                elif idx == len(yellow) - 1:
                     newDict.append(w)
-        for ele in green:
+        for idx, ele in enumerate(green):
             if w[ele[1]] == ele[0]:
                 t = t.replace(ele[0], "", 1)
-                if green.index(ele) == len(green) - 1 and checkYellows(yellow, t) == True:
+                if idx == len(green) - 1 and checkYellows(yellow, t) == True:
                     if w[ele[1]] == ele[0]:
                         newDict.append(w)
                         break
@@ -149,116 +149,146 @@ goalWord = words[r]
 attempt = 1
 
 
-
 # baseline
-while attempt < 10:
-    q = rand.randint(0, len(words) - 1)
-    guess = words[q]
-    if guess == goalWord:
-        print("the baseline guessed the word in " + str(attempt) + " tries.")
-        break
-    
-    print(guess)
-    # if isValidWord(guess, allWords) == False:
-    #     print("Invalid word")
-    #     break
-
-    #compare
-    tup = compare(goalWord, guess)
-
-    # return dictionary with remaining valid words
-    new = newDictionary(tup, words, guess)
-
-    # print(new)
-    words = new
-    
-    
-    attempt += 1
-
-data = open("words.txt", "r")
-words = data.readlines()
-words = words[0].split(",")
-words = [w.strip("\"") for w in words]
-
-
-
-attempt = 1
-#oracle
-while attempt < 10:
-    if attempt == 1:
-        for word in words:
-            i = compare(goalWord, word)
-            if i[0][1] == 2:
-                guess = word
-    else:
+def baseline():
+    global words
+    global goalWord
+    attempt = 1
+    while attempt < 10:
         q = rand.randint(0, len(words) - 1)
         guess = words[q]
-
-
-    if guess == goalWord:
-        print("the oracle guessed the word in " + str(attempt) + " tries.")
-        break
+        if guess == goalWord:
+            print("the baseline guessed the word in " + str(attempt) + " tries.\n")
+            break
+        
+        print("Guess is: " + guess)
+        # if isValidWord(guess, allWords) == False:
+        #     print("Invalid word")
+        #     break
     
-    print(guess)
-    # if isValidWord(guess, allWords) == False:
-    #     print("Invalid word")
-    #     break
+        #compare
+        tup = compare(goalWord, guess)
+    
+        # return dictionary with remaining valid words
+        new = newDictionary(tup, words, guess)
+    
+        # print(new)
+        words = new
+        
+        
+        attempt += 1
 
-    #compare
-    tup = compare(goalWord, guess)
+# data = open("words.txt", "r")
+# words = data.readlines()
+# words = words[0].split(",")
+# words = [w.strip("\"") for w in words]
 
-    # return dictionary with remaining valid words
-    new = newDictionary(tup, words, guess)
+#oracle
+def oracle():
+    global words
+    global goalWord
+    attempt = 1
+    while attempt < 10:
+        if attempt == 1:
+            for word in words:
+                i = compare(goalWord, word)
+                if i[0][1] == 2:
+                    guess = word
+        else:
+            q = rand.randint(0, len(words) - 1)
+            guess = words[q]
+    
+    
+        if guess == goalWord:
+            print("the oracle guessed the word in " + str(attempt) + " tries.\n")
+            break
+        
+        print("Guess is: " + guess)
+        # if isValidWord(guess, allWords) == False:
+        #     print("Invalid word")
+        #     break
+    
+        #compare
+        tup = compare(goalWord, guess)
+    
+        # return dictionary with remaining valid words
+        new = newDictionary(tup, words, guess)
+    
+        # entropies = np.zeros(len(new))
+        # for i in range(len(new)):
+        #     tup = compare(goalWord, new[i])
+        #     entropies[i] = entropyCalc(newDictionary(tup, new, new[i]), goalWord)
+    
+        # print(new)
+        
+        words = new
+        attempt += 1
+    
+# Using entropy to guess
+def entropy_guess():
+    global words
+    global goalWord
+    attempt = 1
+    while attempt < 7:
+        print(len(words))
+    
+        if attempt == 1:
+            entropies = np.zeros(len(words))
+            for i in range(len(words)):
+                tup = compare(goalWord, words[i])
+                entropies[i] = entropyCalc(newDictionary(tup, words, words[i]), goalWord)
+    
+            #guess = words[np.argmax(entropies)]   
+            # For using min entropy
+            guess = words[np.argmin(entropies)]
+    
+        if attempt != 1:
+            entropies = np.zeros(len(new))
+            for i in range(len(new)):
+                tup = compare(goalWord, new[i])
+                entropies[i] = entropyCalc(newDictionary(tup, new, new[i]), goalWord)
+    
+            #guess = new[np.argmax(entropies)]
+            # For using min entropy
+            guess = new[np.argmin(entropies)]
+    
+        if isValidWord(guess, words) == False:
+            print("Invalid word")
+            break
+    
+        print(guess)
+        print(entropies)
+    
+        #compare
+        tup = compare(goalWord, guess)
+    
+        # return dictionary with remaining valid words
+        new = newDictionary(tup, words, guess)
+    
+        print(new)
+        words = new
+    
+        attempt += 1
+        
+# Loop for 100 times
+tries = 1
+words_permanent = words
 
-    # entropies = np.zeros(len(new))
-    # for i in range(len(new)):
-    #     tup = compare(goalWord, new[i])
-    #     entropies[i] = entropyCalc(newDictionary(tup, new, new[i]), goalWord)
+while tries < 101:
+    words = words_permanent
+    r = rand.randint(0, len(words) -1)
+    goalWord = words[r]
+    attempt = 1
+    print("Goal word is: " + goalWord)
 
-    # print(new)
+    # Using baseline to guess
+    baseline()
     
-    words = new
-    attempt += 1
+    # Using oracle to guess
+    #oracle()
     
-# Using max entropy to guess
-#while attempt < 7:
-#    print(len(words))
-    
-#    if attempt == 1:
-#        entropies = np.zeros(len(words))
-#        for i in range(len(words)):
-#            tup = compare(goalWord, words[i])
-#            entropies[i] = entropyCalc(newDictionary(tup, words, words[i]), goalWord)
-         
-#        guess = words[np.argmax(entropies)]   
-#        # For using min entropy
-#        #guess = words[np.argmin(entropies)]
-    
-#    if attempt != 1:
-#        entropies = np.zeros(len(new))
-#        for i in range(len(new)):
-#            tup = compare(goalWord, new[i])
-#            entropies[i] = entropyCalc(newDictionary(tup, new, new[i]), goalWord)
-
-#        guess = new[np.argmax(entropies)]
-#        # For using min entropy
-#        #guess = new[np.argmin(entropies)]
-
-#    if isValidWord(guess, words) == False:
-#        print("Invalid word")
-#        break
-    
-#    print(guess)
-#    print(entropies)
-    
-#    #compare
-#    tup = compare(goalWord, guess)
-
-#    # return dictionary with remaining valid words
-#    new = newDictionary(tup, words, guess)
-    
-#    print(new)
-#    words = new
-    
-#    attempt += 1
+    # Using entropy to guess
+    #entropy_guess()
+        
+    tries += 1
 
