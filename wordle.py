@@ -276,7 +276,54 @@ def entropy_guess():
         words = new
     
         attempt += 1
+
+def best_guess():
+    global words
+    global goalWord
+    attempt = 1
+    guess = "stale"
+    while attempt < 20:
+            
+        #compare
+        tup = compare(goalWord, guess)
+    
+        # return dictionary with remaining valid words
+        new = newDictionary(tup, words, guess)
+        if guess == "stale":
+            print("First guess: " + guess)
+       
         
+        entropies2 = np.zeros(len(new))
+        
+        for j in range(len(new)):
+            entropies = np.zeros(len(new))
+            for i in range(len(new)):
+                tup = compare(new[j], words[i])
+                entropies[i] += entropyCalc(newDictionary(tup, new, new[i]), new[j])
+               
+            entropies2[j] = np.argmin(entropies)
+
+        #guess = new[np.argmax(entropies)]
+        # For using min entropy
+        guess = new[np.argmin(entropies)]
+    
+        if isValidWord(guess, words) == False:
+            print("Invalid word")
+            break
+        
+        if guess == goalWord:
+            print("Guess is: " + guess)
+            print("entropy guessed the word in " + str(attempt) + " tries.\n")
+            guesses_arr.append(attempt)
+            #print(guesses_arr)
+            break
+    
+        print("Guess is: " + guess)
+
+        words = new
+    
+        attempt += 1       
+
 # Loop for 100 times
 tries = 1
 words_permanent = words
@@ -290,13 +337,16 @@ while tries < 101:
     print("Goal word is: " + goalWord)
 
     # Using baseline to guess
-    baseline()
+    #baseline()
     
     # Using oracle to guess
     #oracle()
     
     # Using entropy to guess
     #entropy_guess()
+    
+    # Best guess
+    best_guess()
     
     attempt += 1    
     tries += 1
