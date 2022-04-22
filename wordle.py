@@ -147,7 +147,7 @@ words = [w.strip("\"") for w in words]
 
 r = rand.randint(0, len(words) - 1)
 goalWord = words[r]
-
+guesses_arr = []
 attempt = 1
 
 
